@@ -1,34 +1,7 @@
-#include <boost/crc.hpp>
-#include <string>
-#include <vector>
-#include <ios>
-#include <iostream>
-#include <ostream>
-#include <cmath>
+#include "kindlepid.h"
 
 using namespace std;
 
-typedef boost::crc_optimal<32, 0x04C11DB7, 0, 0xFFFFFFFF, true, true>   mycrc_32_type;
-typedef unsigned int uint;
-typedef unsigned char uchar;
-typedef vector< uchar > SerialChars;
-
-//Class for implementing code originally from "kindlepid.py"
-//By Igor Skochinsky <skochinsky@mail.ru> in 2007
-//Proted by Evan Carew <carew@pobox.com> in 2009
-class KindlePidFinder{
-  string letters, buffer, pid, chksum;
-  unsigned int PidLen;
-public:
-  //Setup the class' globals
-  KindlePidFinder(string serial);
-  //Perform a checksum on the pid
-  string checksumPid();
-  //Calculate the pid from the serial number
-  string pidFromSerial();
-  //Perform something like the standard crc32 calculation
-  uint checksum(string s);
-};
 
 KindlePidFinder::KindlePidFinder(string serial){
   letters = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789";

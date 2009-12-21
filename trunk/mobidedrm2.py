@@ -123,19 +123,19 @@ class DrmStripper:
 		header = data_file[0:72]
 		if header[0x3C:0x3C+8] != 'BOOKMOBI':
 			raise DrmException("invalid file format")
-		self.num_sections, = struct.unpack('>H', data_file[76:78])
+		self.num_sections, = struct.unpack('>H', data_file[76:78]) #Unsigned short
 
 		self.sections = []
 		for i in xrange(self.num_sections):
-			offset, a1,a2,a3,a4 = struct.unpack('>LBBBB', data_file[78+i*8:78+i*8+8])
+			offset, a1,a2,a3,a4 = struct.unpack('>LBBBB', data_file[78+i*8:78+i*8+8]) #unsigned long, uchar, uchar, uchar, uchar
 			flags, val = a1, a2<<16|a3<<8|a4
 			self.sections.append( (offset, flags, val) )
 
 		sect = self.loadSection(0)
-		records, = struct.unpack('>H', sect[0x8:0x8+2])
-		extra_data_flags, = struct.unpack('>L', sect[0xF0:0xF4])
+		records, = struct.unpack('>H', sect[0x8:0x8+2]) #unsigned short
+		extra_data_flags, = struct.unpack('>L', sect[0xF0:0xF4]) #unsigned long
 
-		crypto_type, = struct.unpack('>H', sect[0xC:0xC+2])
+		crypto_type, = struct.unpack('>H', sect[0xC:0xC+2]) #unsigned short
 		if crypto_type != 2:
 			raise DrmException("invalid encryption type: %d" % crypto_type)
 
